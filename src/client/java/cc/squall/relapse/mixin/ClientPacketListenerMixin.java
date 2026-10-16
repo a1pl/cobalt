@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ClientPacketListenerMixin {
     @Inject(method = "sendChat", at = @At("HEAD"), cancellable = true)
     private void relapse$onSendChat(String content, CallbackInfo ci) {
-        EventChatSend event = Client.getInstance().getEVENT_BUS().post(new EventChatSend(content));
+        EventChatSend event = Client.getInstance().getEventBus().post(new EventChatSend(content));
         if (event.isCancelled()) {
             Minecraft.getInstance().gui.hud.getChat().addRecentChat(content);
             ci.cancel();

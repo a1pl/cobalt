@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "relapse",
 	"version": "${version}",
-	"name": "Relapse",
-	"description": "Relapse client",
+	"name": "relapse",
+	"description": "relapse client",
 	"authors": [
 		"sunsuke"
 	],
@@ -15,6 +15,9 @@
 	"entrypoints": {
 		"client": [
 			"cc.squall.relapse.Client"
+		],
+		"badoptimizations": [
+			"cc.squall.relapse.mixin.ModInteg.BadOptimizationsHook"
 		]
 	},
 	"mixins": [

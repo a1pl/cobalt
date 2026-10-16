@@ -1,0 +1,4 @@
+each component has its settings
+
+has draw, which takes in x and y of middle, leftmiddle, bottom middle, right middle, top middle or smthn like that with enum
+and then module can pass around those components

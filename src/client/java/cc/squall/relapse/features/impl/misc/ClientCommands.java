@@ -1,20 +1,20 @@
-package cc.squall.relapse.modules.impl.misc;
+package cc.squall.relapse.features.impl.misc;
 
 
 import cc.squall.relapse.Client;
+import cc.squall.relapse.features.Feature;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.network.chat.Component;
 
 import cc.squall.relapse.events.EventChatSend;
 import meteordevelopment.orbit.EventHandler;
 
-public class ClientCommands extends cc.squall.relapse.modules.Module {
+public class ClientCommands extends Feature {
     public ClientCommands() {
-        super("ClientCommands", "Enables dot commands for client", cc.squall.relapse.modules.Module.Category.Misc);
+        super("ClientCommands", "Enables dot commands for client", Feature.Category.Misc);
     }
     @EventHandler
-    private void onChatSend(EventChatSend event) {
+    public void onChatSend(EventChatSend event) {
         String msg = event.getMessage();
         if (msg.length() < 2 || !msg.startsWith(".") || msg.charAt(1) == '.') return; // let "..." through
         event.cancel();
@@ -42,7 +42,7 @@ public class ClientCommands extends cc.squall.relapse.modules.Module {
 
     private void list() {
         StringBuilder names = new StringBuilder();
-        for (cc.squall.relapse.modules.Module m : Client.getInstance().getModman().getModules()) {
+        for (Feature m : Client.getInstance().getFeatman().getFeatures()) {
             if (!names.isEmpty()) names.append(", ");
             names.append(m.getName()).append(m.isEnabled() ? " [on]" : "");
         }
@@ -50,16 +50,16 @@ public class ClientCommands extends cc.squall.relapse.modules.Module {
     }
 
     private void setState(String[] args, boolean enabled) {
-        cc.squall.relapse.modules.Module m = module(args, 1, ".enable/.disable <module>");
+        Feature m = feature(args, 1, ".enable/.disable <feature>");
         if (m == null) return;
         if (m.isEnabled() != enabled) m.toggle();
         print(m.getName() + (enabled ? " enabled" : " disabled"));
     }
 
     private void toggle(String name) {
-        cc.squall.relapse.modules.Module m = find(name);
+        Feature m = find(name);
         if (m == null) {
-            print("unknown command: ." + name + " (list, enable, disable, settings, set, bind, or a module name)");
+            print("unknown command: ." + name + " (list, enable, disable, settings, set, bind, or a feature name)");
             return;
         }
         m.toggle();
@@ -67,7 +67,7 @@ public class ClientCommands extends cc.squall.relapse.modules.Module {
     }
     /*
     private void settings(String[] args) {
-        Module m = module(args, 1, ".settings <module>");
+        Feature m = feature(args, 1, ".settings <feature>");
         if (m == null) return;
         if (m.getSettings().isEmpty()) {
             print(m.getName() + " has no settings");
@@ -79,10 +79,10 @@ public class ClientCommands extends cc.squall.relapse.modules.Module {
     }
 
     private void set(String[] args) {
-        Module m = module(args, 1, ".set <module> <setting> <value>");
+        Feature m = feature(args, 1, ".set <feature> <setting> <value>");
         if (m == null) return;
         if (args.length < 4) {
-            print("usage: .set <module> <setting> <value>");
+            print("usage: .set <feature> <setting> <value>");
             return;
         }
         for (Setting s : m.getSettings()) {
@@ -97,7 +97,7 @@ public class ClientCommands extends cc.squall.relapse.modules.Module {
     private void bind(String[] args) {
         if (args.length >= 2 && args[1].equalsIgnoreCase("list")) {
             StringBuilder bound = new StringBuilder();
-            for (Module m : Module.getRegistry()) {
+            for (Feature m : Feature.getRegistry()) {
                 if (m.getKeybind() <= 0) continue;
                 if (bound.length() > 0) bound.append(", ");
                 bound.append(m.getName()).append(" = ").append(keyName(m.getKeybind()));
@@ -106,7 +106,7 @@ public class ClientCommands extends cc.squall.relapse.modules.Module {
             return;
         }
 
-        Module m = module(args, 1, ".bind <module> [key|none]   or   .bind list");
+        Feature m = feature(args, 1, ".bind <feature> [key|none]   or   .bind list");
         if (m == null) return;
         if (args.length < 3) {
             print(m.getName() + " is bound to " + (m.getKeybind() <= 0 ? "nothing" : keyName(m.getKeybind())));
@@ -139,17 +139,17 @@ public class ClientCommands extends cc.squall.relapse.modules.Module {
 
      */
 
-    private static cc.squall.relapse.modules.Module find(String name) {
-        return Client.getInstance().getModman().getModule(name);
+    private static Feature find(String name) {
+        return Client.getInstance().getFeatman().getFeature(name);
     }
 
-    private cc.squall.relapse.modules.Module module(String[] args, int index, String usage) {
+    private Feature feature(String[] args, int index, String usage) {
         if (args.length <= index) {
             print("usage: " + usage);
             return null;
         }
-        cc.squall.relapse.modules.Module m = find(args[index]);
-        if (m == null) print("module not found: " + args[index]);
+        Feature m = find(args[index]);
+        if (m == null) print("feature not found: " + args[index]);
         return m;
     }
 

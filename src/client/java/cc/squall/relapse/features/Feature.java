@@ -1,12 +1,12 @@
-package cc.squall.relapse.modules;
+package cc.squall.relapse.features;
 
 import cc.squall.relapse.Client;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
-public abstract class Module {
+public abstract class Feature {
     @Getter
     @Setter
     public boolean enabled;
@@ -19,31 +19,41 @@ public abstract class Module {
     @Getter
     protected final Minecraft mc = Minecraft.getInstance();
 
-    public Module(String name, String description, Category category) {
+    public Feature(String name, String description, Category category) {
         this.name = name;
         this.description = description;
         this.category = category;
         this.enabled = false;
     }
-    public Module(String name, Category category) {
+    public Feature(String name, Category category) {
         this.name = name;
-        this.description = "A module";
+        this.description = "A feature";
         this.category = category;
         this.enabled = false;
     }
 
     public void onUpdate() {}
+    public void onRender2d(GuiGraphicsExtractor graphics, float partialTick) {}
     public void onEnable() {}
     public void onDisable() {}
     public void onToggle() {}
     public void toggle() {
-        enabled = !enabled;
+        if (enabled) disable();
+        else enable();
     }
     public void enable() {
+        if (enabled) return;
         enabled = true;
+        Client.getInstance().getEventBus().subscribe(this);
+        onEnable();
+        onToggle();
     }
     public void disable() {
+        if (!enabled) return;
         enabled = false;
+        Client.getInstance().getEventBus().unsubscribe(this);
+        onDisable();
+        onToggle();
     }
     public boolean isDisabled() {
         return !isEnabled();
