@@ -1,0 +1,18 @@
+{
+	"required": true,
+	"package": "cc.squall.cobalt.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"MinecraftMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	},
+	"mixins": [
+		"ClientPacketListenerMixin",
+		"LightmapMixin"
+	]
+}

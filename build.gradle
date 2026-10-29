@@ -17,7 +17,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"relapse" {
+		"cobalt" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}

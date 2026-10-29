@@ -1,28 +1,28 @@
 {
 	"schemaVersion": 1,
-	"id": "relapse",
+	"id": "cobalt",
 	"version": "${version}",
-	"name": "relapse",
-	"description": "relapse client",
+	"name": "cobalt",
+	"description": "cobalt client",
 	"authors": [
 		"sunsuke"
 	],
 	"contact": {
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/relapse/icon.png",
+	"icon": "assets/cobalt/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"cc.squall.relapse.Client"
+			"cc.squall.cobalt.Client"
 		],
 		"badoptimizations": [
-			"cc.squall.relapse.mixin.ModInteg.BadOptimizationsHook"
+			"cc.squall.cobalt.mixin.ModInteg.BadOptimizationsHook"
 		]
 	},
 	"mixins": [
 		{
-			"config": "relapse.client.mixins.json",
+			"config": "cobalt.client.mixins.json",
 			"environment": "client"
 		}
 	],
