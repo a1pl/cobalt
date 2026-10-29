@@ -18,6 +18,7 @@ public class HUD extends Feature {
     public HUD() {
         super("HUD", "Renders various informative/decorative things on your screen", Category.Render);
     }
+    // idk if "things" is a good choice here
 
     @Override
     public void onRender2d(GuiGraphicsExtractor graphics, float partialTick) {
